@@ -37,9 +37,6 @@ CREATE TABLE `doctrine_migration_versions` (
 -- Déchargement des données de la table `doctrine_migration_versions`
 --
 
-INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-('DoctrineMigrations\\Version20220201181746', '2022-02-01 19:18:18', 53),
-('DoctrineMigrations\\Version20220201190555', '2022-02-01 20:06:05', 56);
 
 -- --------------------------------------------------------
 

@@ -32,7 +32,29 @@ class Personne
      */
     private $dateNaiss;
 
-   
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $tel;
+
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $email;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Ville::class,cascade={"persist"})
+     * @ORM\JoinColumn(name="ville_id", referencedColumnName="id")
+     */
+    private Ville $ville;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Voiture::class,cascade={"persist"})
+     * @ORM\JoinColumn(name="voiture_id", referencedColumnName="id")
+     */
+    private Voiture $voiture;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,5 +96,77 @@ class Personne
         return $this;
     }
 
-   
+    public function getTel(): ?string
+    {
+        return $this->tel;
+    }
+
+    public function setTel(string $tel): self
+    {
+        $this->tel = $tel;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getVilleId(): ?Ville
+    {
+        return $this->ville_id;
+    }
+
+    public function setVilleId(?Ville $ville_id): self
+    {
+        $this->ville_id = $ville_id;
+
+        return $this;
+    }
+
+    public function getVoitureId(): ?Voiture
+    {
+        return $this->voiture_id;
+    }
+
+    public function setVoitureId(?Voiture $voiture_id): self
+    {
+        $this->voiture_id = $voiture_id;
+
+        return $this;
+    }
+
+    public function getVille(): ?Ville
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?Ville $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getVoiture(): ?Voiture
+    {
+        return $this->voiture;
+    }
+
+    public function setVoiture(?Voiture $voiture): self
+    {
+        $this->voiture = $voiture;
+
+        return $this;
+    }
+
+
 }

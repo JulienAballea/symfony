@@ -3,9 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\TrajetRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Personne;
+use App\Entity\Ville;
 
 /**
  * @ORM\Entity(repositoryClass=TrajetRepository::class)
@@ -42,15 +42,10 @@ class Trajet
     private Ville $ville_arr;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Personne::class,cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
-     */
+    * @ORM\ManyToOne(targetEntity="Personne")
+    * @ORM\JoinColumn(name="personne_id", referencedColumnName="id")
+    */
     private Personne $personne;
-
-    public function __construct()
-    {
-        $this->personne = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -117,19 +112,6 @@ class Trajet
         return $this;
     }
 
-    public function addPersonne(Personne $personne): self
-    {
-        if (!$this->personne->contains($personne)) {
-            $this->personne[] = $personne;
-        }
 
-        return $this;
-    }
 
-    public function removePersonne(Personne $personne): self
-    {
-        $this->personne->removeElement($personne);
-
-        return $this;
-    }
 }

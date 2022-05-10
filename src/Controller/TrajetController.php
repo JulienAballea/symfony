@@ -28,13 +28,13 @@ class TrajetController extends AbstractController
 
 
     /**
-     * @Route("/insertTrajet/{nbKms}/{datetrajet}/{ville_dep}/{ville_arr}", name="insertTrajet")
+     * @Route("/insertTrajet/{nbKms}/{datetrajet}/{ville_dep}/{ville_arr}/{pers}", name="insertTrajet")
      */
-    public function insert(Request $request,$nbKms,$datetrajet,$ville_dep,$ville_arr)
+    public function insert(Request $request,$nbKms,$datetrajet,$ville_dep,$ville_arr,$pers)
     {
       $traj=new Trajet();
       $traj->setNbKms($nbKms);
-      $traj->setDatetrajet($datetrajet)->format('Y-m-d h:m:s');
+      $traj->setDatetrajet(new \DateTime($datetrajet));
 
 
       if($request->isMethod('get')){
@@ -42,9 +42,12 @@ class TrajetController extends AbstractController
         $villeRepository=$em->getRepository(Ville::class);
         $vila=$villeRepository->find($ville_arr);
         $vild=$villeRepository->find($ville_dep);
-        if( $vila && $vild){
+        $personneRepository=$em->getRepository(Personne::class);
+        $perso=$personneRepository->find($pers);
+        if( $perso && $vila && $vild){
           $traj->setVilleArr($vila);
           $traj->setVilleDep($vild);
+          $traj->setPersonne($perso);
           $em->persist($traj);
           $em->flush();
           $resultat=["ok"];
@@ -60,8 +63,8 @@ class TrajetController extends AbstractController
       return $response;
 
     }
-    /**
-    * @Route("/deleteTrajet/{id}", name="deleteTrajet",requirements={"id"="[0-9]{1,5}"})
+      /**
+      * @Route("/deleteTrajet/{id}", name="deleteTrajet",requirements={"id"="[0-9]{1,5}"})
       */
       public function delete(Request $request,$id){
          //récupération du Manager  et du repository pour accéder à la bdd
@@ -87,7 +90,7 @@ class TrajetController extends AbstractController
         $listeTrajet=$trajonneRepository->findAll();
         $result=[];
         foreach($listeTrajet as $traj){
-          array_push($result,['id'=>$traj->getId(),"nom"=>$traj->getNom(),"prenom"=>$traj->getPrenom(),"tel"=>$traj->getTel(),"email"=>$traj->getEmail(),"ville_id"=>$traj->getVille()->getId(),"voiture_id"=>$traj->getVoiture()->getId()]);
+          array_push($result,['id'=>$traj->getId(),"nbKms"=>$traj->getNbKms(),"date"=>$traj->getDatetrajet()->format('Y-m-d h:m:s'),"ville_dep"=>$traj->getVilleDep()->getId(),"ville_arr"=>$traj->getVilleArr()->getId(),"personne"=>$traj->getPersonne()->getId()]);
         }
         $response=new JsonResponse($result);
 
